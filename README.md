@@ -1,12 +1,15 @@
 # Граф зависимостей npm — вариант 2
 
-## Этапы 1–3
+## Этапы 1–4
 
-CLI и получение прямых зависимостей через npm Registry. Добавлен поиск
-транзитивных зависимостей BFS без рекурсии, защита от циклов и тестовый JSON.
+Консольный анализатор зависимостей npm на Python. Получение прямых
+зависимостей и BFS реализованы без менеджеров пакетов и npm-библиотек.
+Поддерживается топологический порядок (зависимости перед пакетами) и
+сравнение с `npm view` при установленном Node.js.
 
 ```powershell
-python src/main.py --stage 3 --package A --repo tests/fixtures/cycle.json --test-mode
+python src/main.py --stage 4 --package A --repo tests/fixtures/simple.json --test-mode --show-order
+python src/main.py --stage 4 --package is-even --repo https://registry.npmjs.org --show-order --compare-npm
 ```
 
-Тесты: `python -m unittest discover -s tests -p "test_*.py" -v`.
+При цикле корректный строгий порядок невозможен, показывается предупреждение.

@@ -1,15 +1,17 @@
-"""Stage 3: iterative BFS and cycle handling."""
+"""Stage 4: show dependency-first order and compare with native npm."""
 
 import sys
 
 from config import build_parser, show_config, validate_config
 from dependency_graph import cycle_example, traverse_bfs
+from load_order import show_order
+from npm_compare import compare_direct_with_npm
 from npm_registry import NpmRegistry
 from test_fixture import load_fixture
 
 
 def select_lookup(config):
-    """Select direct dependencies provider."""
+    """Create direct dependency provider for test or live mode."""
     if config.test_mode:
         fixture = load_fixture(config.repo)
         if config.package not in fixture:
@@ -19,7 +21,7 @@ def select_lookup(config):
 
 
 def main():
-    """Collect all transitive dependencies with BFS."""
+    """Perform BFS and print optional topological order."""
     parser = build_parser()
     try:
         config = validate_config(parser.parse_args())
@@ -35,6 +37,12 @@ def main():
         )
         print("BFS:", " -> ".join(order))
         print("Цикл:", cycle_example(graph) or "нет")
+        if config.stage == 4 and config.show_order:
+            show_order(graph)
+        if config.stage == 4 and config.compare_npm:
+            compare_direct_with_npm(
+                config.package, config.repo, lookup(config.package)
+            )
     except (ValueError, KeyError) as error:
         print(f"Ошибка: {error}", file=sys.stderr)
         return 1
