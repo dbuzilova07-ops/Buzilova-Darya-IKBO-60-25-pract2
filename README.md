@@ -1,17 +1,12 @@
 # Граф зависимостей npm — вариант 2
 
-## Этапы 1–2
+## Этапы 1–3
 
-Python CLI принимает `--package`, `--repo`, `--test-mode`, `--ascii-tree`.
-В этапе 1 показывает параметры, в этапе 2 получает прямые зависимости
-пакета через HTTP из npm Registry, без npm-библиотек.
-
-```powershell
-python src/main.py --stage 2 --package is-odd --repo https://registry.npmjs.org
-```
-
-Тестовый режим:
+CLI и получение прямых зависимостей через npm Registry. Добавлен поиск
+транзитивных зависимостей BFS без рекурсии, защита от циклов и тестовый JSON.
 
 ```powershell
-python src/main.py --stage 2 --package A --repo tests/fixtures/simple.json --test-mode
+python src/main.py --stage 3 --package A --repo tests/fixtures/cycle.json --test-mode
 ```
+
+Тесты: `python -m unittest discover -s tests -p "test_*.py" -v`.
