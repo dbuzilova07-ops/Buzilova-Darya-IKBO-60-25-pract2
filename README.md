@@ -1,11 +1,17 @@
 # Граф зависимостей npm — вариант 2
 
-## Этап 1 — CLI с конфигурацией
+## Этапы 1–2
 
-Программа на Python принимает параметры `--package`, `--repo`, `--test-mode`,
-`--ascii-tree`, проверяет ошибки ввода и показывает значения ключ–значение.
+Python CLI принимает `--package`, `--repo`, `--test-mode`, `--ascii-tree`.
+В этапе 1 показывает параметры, в этапе 2 получает прямые зависимости
+пакета через HTTP из npm Registry, без npm-библиотек.
 
-Запуск: `python src/main.py --stage 1 --package A --repo tests/fixtures/simple.json --test-mode`.
+```powershell
+python src/main.py --stage 2 --package is-odd --repo https://registry.npmjs.org
+```
 
-Запуск тестов: `python -m unittest discover -s tests -p "test_*.py" -v`
-(тесты добавляются постепенно вместе с новыми этапами).
+Тестовый режим:
+
+```powershell
+python src/main.py --stage 2 --package A --repo tests/fixtures/simple.json --test-mode
+```
