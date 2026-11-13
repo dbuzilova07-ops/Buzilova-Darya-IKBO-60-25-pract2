@@ -19,7 +19,7 @@ def build_parser():
     parser.add_argument("--ascii-tree", action="store_true")
     parser.add_argument("--show-order", action="store_true")
     parser.add_argument("--compare-npm", action="store_true")
-    parser.add_argument("--stage", type=int, choices=range(1, 2), default=1)
+    parser.add_argument("--stage", type=int, choices=range(1, 6), default=5)
     parser.add_argument("--max-nodes", type=int, default=40)
     parser.add_argument("--out", default="output")
     parser.add_argument("--no-open", action="store_true")
