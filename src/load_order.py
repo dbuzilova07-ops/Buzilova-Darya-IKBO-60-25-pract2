@@ -3,8 +3,8 @@
 import heapq
 
 
-def dependency_first_order(graph):
-    """Topologically order dependencies before dependents (DAG only)."""
+def _prepare_order(graph):
+    """Build dependency counters and reverse edges for ordering."""
     pending = {name: len(set(deps)) for name, deps in graph.items()}
     dependents = {name: set() for name in graph}
     for name, deps in graph.items():
@@ -12,6 +12,12 @@ def dependency_first_order(graph):
             dependents[dep].add(name)
     ready = [name for name, count in pending.items() if count == 0]
     heapq.heapify(ready)
+    return pending, dependents, ready
+
+
+def dependency_first_order(graph):
+    """Topologically order dependencies before dependents (DAG only)."""
+    pending, dependents, ready = _prepare_order(graph)
     result = []
     while ready:
         name = heapq.heappop(ready)

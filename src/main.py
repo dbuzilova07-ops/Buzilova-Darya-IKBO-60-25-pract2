@@ -10,6 +10,11 @@ from load_order import show_order
 from npm_compare import compare_direct_with_npm
 from npm_registry import NpmRegistry
 
+STAGE_CONFIG = 1
+STAGE_DIRECT = 2
+STAGE_ORDER = 4
+STAGE_VISUALIZATION = 5
+
 
 def obtain_lookup(config):
     """Select test JSON repository or live npm Registry data source."""
@@ -53,20 +58,20 @@ def display_bfs(config, lookup):
 def run(config):
     """Execute the requested stage with only the relevant output."""
     show_config(config)
-    if config.stage == 1:
+    if config.stage == STAGE_CONFIG:
         return
     lookup = obtain_lookup(config)
-    if config.stage == 2:
+    if config.stage == STAGE_DIRECT:
         display_direct(config, lookup)
         return
     graph = display_bfs(config, lookup)
-    if config.stage >= 4 and config.show_order:
+    if config.stage >= STAGE_ORDER and config.show_order:
         show_order(graph)
-    if config.stage >= 4 and config.compare_npm:
+    if config.stage >= STAGE_ORDER and config.compare_npm:
         compare_direct_with_npm(
             config.package, config.repo, lookup(config.package)
         )
-    if config.stage == 5:
+    if config.stage == STAGE_VISUALIZATION:
         if config.ascii_tree:
             print("ASCII-дерево:\n" + ascii_tree(graph, config.package))
         render_graph(graph, config.package, config.out, not config.no_open)
